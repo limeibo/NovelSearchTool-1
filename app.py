@@ -7,6 +7,7 @@ from flask import Flask, render_template, request
 from biz.json_tool import convert_to_json
 from biz.zip import zipBook
 from control.search_and_download import *
+from control.novel_recommend import *
 
 app = Flask(__name__)
 port = 5000
@@ -16,8 +17,8 @@ host = "192.168.0.104"
 @app.route('/')
 @app.route('/main.html')
 def index():
-    return render_template('main.html')
-
+    recommend = recommend_from_qidian()
+    return render_template('main.html', recommend=json.dumps(recommend, default=convert_to_json))
 
 @app.route('/novel_search/<key>', methods=['POST'])
 def search_novel(key):
